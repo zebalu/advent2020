@@ -14,7 +14,7 @@ class SmartExpensSummer {
 		var i = 0
 		while (i < nums.size && nums[i] <= target) {
 			val modifiedTarget = target - nums[i]
-			var j = 0
+			var j = i + 1
 			while (j < nums.size && nums[j] <= modifiedTarget) {
 				if (nums[j] == modifiedTarget) {
 					return nums[i] * modifiedTarget
@@ -30,15 +30,14 @@ class SmartExpensSummer {
 		var i = 0
 		while (i < nums.size && nums[i] <= target) {
 			val modifiedTarget = target - nums[i]
-			var j = 0
+			var j = i + 1
 			while (j < nums.size && nums[j] <= modifiedTarget) {
 				val modTarget2 = modifiedTarget - nums[j]
-				var k = 0
-				while(k<nums.size && nums[k] <= modTarget2) {
-					
-				if (nums[k] == modTarget2) {
-					return nums[i] * nums[j] * nums[k]
-				}
+				var k = j + 1
+				while (k < nums.size && nums[k] <= modTarget2) {
+					if (nums[k] == modTarget2) {
+						return nums[i] * nums[j] * nums[k]
+					}
 					++k
 				}
 				++j
