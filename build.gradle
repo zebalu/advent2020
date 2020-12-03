@@ -77,10 +77,13 @@ tasks.create('initDay') {
 	    	throw new GradleException("day: ${day.name} already exists")
 	    }
 		createDir(day)
-		createDir(new File(day , 'src/main/kotlin'))
-		createDir(new File(day , 'src/main/resources'))
-		createDir(new File(day , 'src/test/kotlin'))
-		createDir(new File(day , 'src/test/resources'))
+		def configs = ['main', 'test']
+		def types = ['kotlin', 'resources']
+		configs.each { c -> 
+		    types.each { t -> 
+		        createDir(new File(day, "src/${c}/${t}/io/github/zebalu/advent2020"))
+		    }
+		}
 	}
 	group 'util'
 }
