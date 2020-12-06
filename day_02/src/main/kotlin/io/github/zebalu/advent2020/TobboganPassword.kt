@@ -8,9 +8,9 @@ class TobboganPassword {
 	private val valid: Boolean;
 	constructor(passwordLine: String) {
 		val parts = passwordLine.split(" ");
-		val minMax = parts[0].split("-");
-		pos1 = Integer.parseInt(minMax[0])-1;
-		pos2 = Integer.parseInt(minMax[1])-1;
+		val positions = parts[0].split("-");
+		pos1 = Integer.parseInt(positions[0])-1;
+		pos2 = Integer.parseInt(positions[1])-1;
 		required = parts[1].substring(0, parts[1].length-1);
 		password = parts[2]
 		valid = calculateValidity();
