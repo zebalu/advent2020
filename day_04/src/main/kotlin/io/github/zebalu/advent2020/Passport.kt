@@ -50,72 +50,13 @@ class Passport {
 
 	fun countExtendedValid(): Int {
 		var result = 0
-		if (byr != null) {
-			val year = Integer.parseInt(byr)
-			if (1920 <= year && year <= 2002) ++result
-		}
-		if (iyr != null) {
-			val year = Integer.parseInt(iyr)
-			if (2010 <= year && year <= 2020) ++result
-		}
-		if (eyr != null) {
-			val year = Integer.parseInt(eyr)
-			if (2020 <= year && year <= 2030) ++result
-		}
-		if (hgt != null) {
-			val fixHgt = hgt
-			if (fixHgt != null) {
-				val isCm = fixHgt.endsWith("cm")
-				val isIn = fixHgt.endsWith("in")
-				if (isCm || isIn) {
-					val cutHgt = fixHgt.substring(0, fixHgt.length - 2)
-					val height = cutHgt.toInt()
-					if (isCm) {
-						if (150 <= height && height <= 193) {
-							++result
-						}
-					} else {
-						if (59 <= height && height <= 76) {
-							++result
-						}
-					}
-				}
-			}
-		}
-		if (hcl != null) {
-			val hairColor = hcl
-			if (hairColor != null) {
-				if (hairColor.length == 7) {
-					try {
-						hairColor.substring(1).toLong(16)
-						++result
-					} catch (e: Exception) {
-
-					}
-				}
-			}
-		}
-		if (ecl != null) {
-			val eye = ecl
-			if (eye != null) {
-				if (isValidEyeColor(eye)) {
-					++result
-				}
-			}
-		}
-		if (pid != null) {
-			val fixPid = pid
-			if (fixPid != null) {
-				if (fixPid.length == 9) {
-					try {
-						fixPid.toLong()
-						++result
-					} catch (e: Exception) {
-						
-					}
-				}
-			}
-		}
+		result += byr?.let { s -> s.toInt() }.let { year -> if (year in 1920..2002) 1 else 0 }
+		result += iyr?.let { s -> s.toInt() }.let { year -> if (year in 2010..2020) 1 else 0 }
+		result += eyr?.let { s -> s.toInt() }.let { year -> if (year in 2020..2030) 1 else 0 }
+		result += hgt?.let { s -> if (isValidHeight(s)) 1 else 0} ?: 0
+		result += hcl?.let { s -> if (isValidHairColor(s)) 1 else 0 } ?: 0
+		result += ecl?.let { c -> if (isValidEyeColor(c)) 1 else 0 } ?: 0
+		result += pid?.let { p -> if (p.length == 9) 1 else 0 } ?: 0
 		//if (cid != null) ++result
 		return result
 	}
@@ -131,6 +72,24 @@ class Passport {
 		if (pid != null) ++result
 		if (cid != null) ++result
 		return result
+	}
+
+	private fun isValidHeight(height: String): Boolean {
+		return if (height.endsWith("cm")) height.substring(0, height.length - 2).toInt() in 150..193
+		else if (height.endsWith("in")) height.substring(0, height.length - 2).toInt() in 59..76
+		else false
+	}
+
+	private fun isValidHairColor(hairColor: String): Boolean {
+		if (hairColor.length == 7) {
+			try {
+				hairColor.substring(1).toLong(16)
+				return true
+			} catch (e: Exception) {
+				return false
+			}
+		}
+		return false
 	}
 
 	override fun toString(): String {
