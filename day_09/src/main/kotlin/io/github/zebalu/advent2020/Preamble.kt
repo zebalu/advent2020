@@ -18,8 +18,7 @@ class Preamble {
 			return true
 		} else {
 			val set = list.subList(list.size - size, list.size).asSequence().toSet()
-			val canBeAdded =
-				set.find { i -> set.contains(num - i) && num - i != i }.let { i -> if (i == null) false else true }
+			val canBeAdded = set.any { i -> num - i != i && set.contains(num - i) }
 			if (canBeAdded) {
 				list.add(num)
 			}
