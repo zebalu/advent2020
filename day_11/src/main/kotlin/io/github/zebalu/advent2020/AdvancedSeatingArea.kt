@@ -37,35 +37,28 @@ class AdvancedSeatingArea {
 	}
 
 	private fun future(i: Int, j: Int): Char {
-		if (area[i][j] == '.') {
-			return '.'
-		} else if (area[i][j] == '#') {
-			if (collectAdjecentSeats(i, j).count { c -> c == '#' } >= 5) {
-				return 'L'
-			} else {
-				return '#'
-			}
-		} else if (area[i][j] == 'L') {
-			if (collectAdjecentSeats(i, j).count { c -> c == '#' } == 0) {
-				return '#'
-			} else {
-				return 'L'
-			}
+		return if (area[i][j] == '.') {
+			'.'
+		} else if (area[i][j] == '#' && countAdjecentOccupiedSeats(i, j) >= 5) {
+			'L'
+		} else if (area[i][j] == 'L' && countAdjecentOccupiedSeats(i, j) == 0) {
+			'#'
 		} else {
-			throw IllegalStateException("could not do anything with (" + i + ", " + j + ")")
+			area[i][j]
 		}
 	}
 
+	private fun countAdjecentOccupiedSeats(i: Int, j: Int) = collectAdjecentSeats(i, j).count { c -> c == '#' }
+
 	private fun collectAdjecentSeats(i: Int, j: Int): List<Char> {
 		val result = mutableListOf<Char>()
-		result.add(findFirstNotflore(i, j, -1, -1))
-		result.add(findFirstNotflore(i, j, -1, +0))
-		result.add(findFirstNotflore(i, j, -1, +1))
-		result.add(findFirstNotflore(i, j, +0, -1))
-		result.add(findFirstNotflore(i, j, +0, +1))
-		result.add(findFirstNotflore(i, j, +1, -1))
-		result.add(findFirstNotflore(i, j, +1, 0))
-		result.add(findFirstNotflore(i, j, +1, +1))
+		for (iDiff in -1..1) {
+			for (jDiff in -1..1) {
+				if (!(iDiff == jDiff && iDiff == 0)) {
+					result.add(findFirstNotflore(i, j, iDiff, jDiff))
+				}
+			}
+		}
 		return result
 	}
 
