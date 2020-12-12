@@ -1,15 +1,9 @@
 package io.github.zebalu.advent2020
 
-class Preamble {
-	val size: Int
+class Preamble(private val size: Int) {
 	var reached: Boolean = false
 
-	//val nums:MutableSet<Int> = mutableSetOf<Int>()
 	val list: MutableList<Int> = mutableListOf<Int>()
-
-	constructor(size: Int) {
-		this.size = size
-	}
 
 	fun add(num: Int): Boolean {
 		if (!reached) {
@@ -17,7 +11,7 @@ class Preamble {
 			reached = list.size >= size
 			return true
 		} else {
-			val set = list.subList(list.size - size, list.size).asSequence().toSet()
+			val set = list.subList(list.size - size, list.size).toSet()
 			val canBeAdded = set.any { i -> num - i != i && set.contains(num - i) }
 			if (canBeAdded) {
 				list.add(num)

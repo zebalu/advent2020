@@ -5,7 +5,7 @@ typealias  Rules = Map<String, Set<Pair<Int, String>>>
 object BagRuleReader {
 
 	fun readRules(lines: List<String>): Rules {
-		val result = HashMap<String, MutableSet<Pair<Int, String>>>()
+		val result = mutableMapOf<String, MutableSet<Pair<Int, String>>>()
 		lines.forEach { line ->
 			val parts = line.split(" bags contain ")
 			val type = parts[0]
@@ -16,27 +16,23 @@ object BagRuleReader {
 				}
 				val count = if ("no".equals(split[0])) 0 else split[0].toInt()
 				val bagName = if (count == 0) "no other" else split[1] + " " + split[2]
-				result.putIfAbsent(type, HashSet<Pair<Int, String>>());
-				val set = result.get(type)
-				set?.add(Pair(count, bagName))
+				result.computeIfAbsent(type, { _ -> mutableSetOf<Pair<Int, String>>() }).add(Pair(count, bagName))
 			}
 		}
 		return result
 	}
 
-	fun countWaysToShinyGold(rules: Map<String, Set<Pair<Int, String>>>): Int {
-		return rules.keys.filter { name ->
+	fun countWaysToShinyGold(rules: Map<String, Set<Pair<Int, String>>>) =
+		rules.keys.count { name ->
 			(!("shiny gold".equals(name))) && isThereWayToShinyGold(
 				name,
 				rules,
 				setOf(name)
 			)
-		}.count()
-	}
+		}
 
-	fun countContentInShinyGold(rules: Rules): Int {
-		return countContent("shiny gold", rules)
-	}
+
+	fun countContentInShinyGold(rules: Rules) = countContent("shiny gold", rules)
 
 	private fun countContent(name: String, rules: Rules): Int {
 		return rules.get(name)?.map { pair ->

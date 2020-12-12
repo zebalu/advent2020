@@ -3,9 +3,9 @@ package io.github.zebalu.advent2020
 class GameConsole {
 	private var pointer:Int = 0
 	private var acc:Int=0
-	private var code:List<String> = ArrayList()
-	private val visitedNodes = HashSet<Int>()
-	private val history = ArrayList<Int>()
+	private var code:List<String> = mutableListOf<String>()
+	private val visitedNodes = mutableSetOf<Int>()
+	private val history = mutableListOf<Int>()
 	constructor (code:List<String>) {
 		this.code=code
 	}

@@ -5,41 +5,39 @@ import java.lang.IllegalStateException
 
 object ConsoleExecutor {
 
-	fun findAccBeforeRepeat(code:List<String>): Int {
+	fun findAccBeforeRepeat(code: List<String>): Int {
 		val console = GameConsole(code)
-		while(!console.isAboutToRepeat()) {
+		while (!console.isAboutToRepeat()) {
 			console.step()
 		}
 		return console.getAcc()
 	}
-	
+
 	fun makeFinish(code: List<String>): Int {
-		var instruction:Int = 0
-		while(instruction<code.size) {
-			val changedCode = ArrayList(code)
-			val changed =
-			if(changedCode[instruction].startsWith("nop")) {
-				changedCode[instruction]=changedCode[instruction].replace("nop","jmp")
-				true
-			} else if(changedCode[instruction].startsWith("jmp")) {
-				changedCode[instruction]=changedCode[instruction].replace("jmp","nop")
-				true
-			} else {
-				false
-			}
-			if(changed) {
+		for (instruction in code.indices) {
+			val (changedCode, changed) = changeCode(code.toMutableList(), instruction)
+			if (changed) {
 				val console = GameConsole(changedCode)
-				while(!console.isAboutToRepeat() && !console.isFinished()) {
+				while (!console.isAboutToRepeat() && !console.isFinished()) {
 					console.step()
 				}
-				if(console.isFinished()) {
-					//println ("changed: "+instruction)
+				if (console.isFinished()) {
 					return console.getAcc()
 				}
 			}
-			++instruction
 		}
 		throw IllegalStateException("Should not happen!")
 	}
-	
+
+	fun changeCode(code: MutableList<String>, idx: Int): Pair<List<String>, Boolean> {
+		return Pair(
+			code,
+			if (code[idx].startsWith("nop"))
+				true.also { code[idx] = code[idx].replace("nop", "jmp") }
+			else if (code[idx].startsWith("jmp"))
+				true.also { code[idx] = code[idx].replace("jmp", "nop") }
+			else false
+		)
+	}
+
 }

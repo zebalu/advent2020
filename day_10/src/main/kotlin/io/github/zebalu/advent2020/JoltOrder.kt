@@ -1,12 +1,7 @@
 package io.github.zebalu.advent2020
 
-class JoltOrder {
-	private val adapters: List<Int>;
-
-	constructor(adapters: List<Int>) {
-		adapters.asSequence().sorted().toList()
-		this.adapters = adapters.asSequence().sorted().toList()
-	}
+class JoltOrder(adapterList: List<Int>) {
+	private val adapters = adapterList.sorted();
 
 	fun countDiffs(): Int {
 		var sum = 0
