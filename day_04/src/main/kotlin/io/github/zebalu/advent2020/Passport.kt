@@ -31,7 +31,7 @@ class Passport {
 				"ecl" -> ecl = vals[1]
 				"pid" -> pid = vals[1]
 				"cid" -> cid = vals[1]
-				else -> print("problem: " + field + "\t" + vals)
+				else -> print("problem:\t$field\t$vals")
 			}
 		}
 	}
@@ -41,7 +41,7 @@ class Passport {
 	}
 
 	fun isCheatedValid(): Boolean {
-		return countNotNulls() == 8 || countNotNulls() == 7 && cid == null
+		return countNotNulls() == 7
 	}
 
 	fun isCheatedExtendedValid(): Boolean {
@@ -70,7 +70,6 @@ class Passport {
 		if (hcl != null) ++result
 		if (ecl != null) ++result
 		if (pid != null) ++result
-		if (cid != null) ++result
 		return result
 	}
 
