@@ -13,6 +13,7 @@ plugins {
 
 allprojects {
     apply plugin: 'eclipse'
+	group='io.github.zebalu.advent2020'
 }
  
 subprojects {

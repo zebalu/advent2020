@@ -19,11 +19,21 @@ abstract class AbstractSeatingArea(lines:List<String>, private val toleration: I
         }
         return changed
     }
+	
+	fun allStepsTillStable():List<Array<CharArray>> {
+		val result = mutableListOf<Array<CharArray>>()
+		result += copyOfArea()
+		while(applyNextStep()) {
+			result += copyOfArea()
+		}
+		return result
+	}
+	
+	private fun copyOfArea():Array<CharArray> = Array(area.size) {i -> area[i].copyOf() }
+	
 
     private fun calcNext(): Pair<Array<CharArray>, Boolean> {
-        val copy = Array(area.size) { i ->
-            area[i].copyOf()
-        }
+        val copy = copyOfArea()
         var changed = false
         for (i in copy.indices) {
             for (j in copy[i].indices) {
