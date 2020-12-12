@@ -1,26 +1,10 @@
 package io.github.zebalu.advent2020
 
-class WpShip {
-	private var y = 0
-	private var x = 0
-	private var facing = 90
+class WpShip: AbstractShip() {
 	private var wpX = 10
 	private var wpY = -1
 
-	fun move(instructions: List<String>): Int {
-		val regex = Regex("(.)(\\d+)")
-		//println("start: ${this}")
-		instructions.forEach { instruction ->
-			val (command, value) = regex.find(instruction)!!.destructured
-			//println("doing ${command} with ${value}")
-			apply(command, value.toInt())
-			//println ("arrive: ${this}")
-		}
-		//println("finally: ${this}")
-		return Math.abs(x) + Math.abs(y)
-	}
-
-	private fun apply(command: String, value: Int) {
+	override protected fun apply(command: String, value: Int) {
 		when (command) {
 			"N" -> wpY -= value
 			"S" -> wpY += value
@@ -39,7 +23,6 @@ class WpShip {
 	}
 
 	private fun trunWaypointLeft(value: Int) {
-		//println("tl: ${value}")
 		when (value) {
 			90 -> setWayPoints(wpY, -wpX)
 			180 -> setWayPoints(-wpX, -wpY)

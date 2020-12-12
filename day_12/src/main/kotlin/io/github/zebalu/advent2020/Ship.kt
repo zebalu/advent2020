@@ -2,21 +2,10 @@ package io.github.zebalu.advent2020
 
 import java.lang.IllegalStateException
 
-class Ship {
-	private var y = 0
-	private var x = 0
+class Ship : AbstractShip() {
 	private var facing = 90
 
-	fun move(instructions: List<String>): Int {
-		val regex = Regex("(.)(\\d+)")
-		instructions.forEach { instruction ->
-			val (command, value) = regex.find(instruction)!!.destructured
-			apply(command, value.toInt())
-		}
-		return Math.abs(x) + Math.abs(y)
-	}
-
-	private fun apply(command: String, value: Int) {
+	override protected fun apply(command: String, value: Int) {
 		when (command) {
 			"N" -> y -= value
 			"S" -> y += value
