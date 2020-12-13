@@ -9,11 +9,12 @@ object BusReader {
 		return BusFinder(now, buses)
 	}
 
-	fun readBusRequest(lines: List<String>): List<Pair<Int,Int>> {
-		val result = mutableListOf<Pair<Int,Int>>()
-		lines[1].split(",").forEachIndexed {index, string ->
-		    if(isNumber(string)) {
-				result += Pair(string.toInt(), index)
+	fun readBusRequest(lines: List<String>): List<Pair<Int, Int>> {
+		val result = mutableListOf<Pair<Int, Int>>()
+		lines[1].split(",").forEachIndexed { index, string ->
+			if (isNumber(string)) {
+				//println("$string \t -- \t $index \t --> \t ${getFrequencyModuloPair(string.toInt(), index)}")
+				result += getFrequencyModuloPair(string.toInt(), index)
 			}
 		}
 		return result
@@ -27,4 +28,11 @@ object BusReader {
 			return false
 		}
 	}
+
+	private fun getFrequencyModuloPair(frequency: Int, arrivesAt: Int): Pair<Int, Int> =
+		if (arrivesAt == 0) Pair(frequency, arrivesAt)
+		else if (arrivesAt < frequency) Pair(frequency, frequency - arrivesAt)
+		else Pair(frequency, frequency - (arrivesAt % frequency))
+
+
 }
