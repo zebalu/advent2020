@@ -27,7 +27,7 @@ class IdealTimeFinderTest {
 			IdealTimeFinder.findTime(BusReader.readBusRequest("\n17,x,13,19".lines()))
 		)
 	}
-	
+
 	@Test
 	fun example3() {
 		Assert.assertEquals(
@@ -35,7 +35,7 @@ class IdealTimeFinderTest {
 			IdealTimeFinder.findTime(BusReader.readBusRequest("\n67,7,59,61".lines()))
 		)
 	}
-	
+
 	@Test
 	fun example4() {
 		Assert.assertEquals(
@@ -43,7 +43,7 @@ class IdealTimeFinderTest {
 			IdealTimeFinder.findTime(BusReader.readBusRequest("\n67,x,7,59,61".lines()))
 		)
 	}
-	
+
 	@Test
 	fun example5() {
 		Assert.assertEquals(
@@ -51,7 +51,7 @@ class IdealTimeFinderTest {
 			IdealTimeFinder.findTime(BusReader.readBusRequest("\n67,7,x,59,61".lines()))
 		)
 	}
-	
+
 	@Test
 	fun example6() {
 		Assert.assertEquals(
@@ -59,5 +59,5 @@ class IdealTimeFinderTest {
 			IdealTimeFinder.findTime(BusReader.readBusRequest("\n1789,37,47,1889".lines()))
 		)
 	}
-	
+
 }

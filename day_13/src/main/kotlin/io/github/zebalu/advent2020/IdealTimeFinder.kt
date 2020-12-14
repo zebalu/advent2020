@@ -22,28 +22,23 @@ object IdealTimeFinder {
 
 	/* returns x where (a * x) % b == 1 */
 	fun multInv(a: Long, b: Long): Long {
-		if (b == 1L) return 1
+		if (b == 1L) return 1L
 		var aa = a
 		var bb = b
 		var x0 = 0L
 		var x1 = 1L
 		while (aa > 1) {
-			val q = aa / bb
-			var t = bb
-			bb = aa % bb
-			aa = t
-			t = x0
-			x0 = x1 - q * x0
-			x1 = t
+			x0 = (x1 - (aa / bb) * x0).also { x1 = x0 }
+			bb = (aa % bb).also { aa = bb }
 		}
 		if (x1 < 0) x1 += b
 		return x1
 	}
 
-	fun chineseRemainder(buses: List<Pair<Long,Long>>): Long {
-		val prod = buses.map{it.first}.fold(1L) { acc, i -> acc * i }
+	fun chineseRemainder(buses: List<Pair<Long, Long>>): Long {
+		val prod = buses.map { it.first }.fold(1L) { acc, i -> acc * i }
 		var sum = 0L
-		for (i in 0 until buses.size) {
+		for (i in buses.indices) {
 			val p = prod / buses[i].first
 			sum += buses[i].second * multInv(p, buses[i].first) * p
 		}
