@@ -16,8 +16,8 @@ object IdealTimeFinder {
 
 	private fun longBuses(buses: List<Pair<Int, Int>>) = buses.map { Pair(it.first.toLong(), it.second.toLong()) }
 
-	fun findTime(buses: List<Pair<Int, Int>>): Long {
-		return chineseRemainder(longBuses(buses))
+	fun findTime(buses: List<Pair<Long, Long>>): Long {
+		return chineseRemainder(buses)
 	}
 
 	/* returns x where (a * x) % b == 1 */
