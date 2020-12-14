@@ -10,14 +10,12 @@ class BusFinder(private val now: Int, private val buses: List<Int>) {
 	}
 
 	private fun nextAvailable(): Pair<Int, Int> {
-		var minute = now
-		while (minute <= minute + max) {
+		for (minute in now..(now + max)) {
 			buses.forEach { bus ->
 				if (minute % bus == 0) {
 					return Pair(bus, minute)
 				}
 			}
-			++minute
 		}
 		throw IllegalStateException("There is no next available bus")
 	}
