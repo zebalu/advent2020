@@ -21,7 +21,7 @@ class BitMaskComputerTest {
 	
 	@Test
 	fun input2() {
-		Assert.assertEquals(208, BMComputerReader.executeComputer2(ResourceReader.lines("/input_14.txt")))
+		Assert.assertEquals(2308180581795, BMComputerReader.executeComputer2(ResourceReader.lines("/input_14.txt")))
 	}
 
 }
