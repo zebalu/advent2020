@@ -33,7 +33,7 @@ object TicketReader {
 	}
 
 	private fun findFieldThatAcceptsAllValues(fields: Set<ValidatableField>, values: List<Int>) =
-		fields.find { vf -> values.all { v -> vf.accepts(v) } }!!
+		fields.find { vf -> values.all { vf.accepts(it) } }!!
 
 	private fun findDefinitlyMappedIndices(
 		indices: IntRange,
@@ -43,7 +43,7 @@ object TicketReader {
 		.map { (i, values) -> Pair(isDefinitlyMapped(fields, values), i) }.filter { it.first }.map { it.second }
 
 	private fun isDefinitlyMapped(fields: Set<ValidatableField>, values: List<Int>) =
-		1 == fields.count { f -> values.all { v -> f.accepts(v) } }
+		1 == fields.count { f -> values.all { f.accepts(it) } }
 
 	private fun readTicket(line: String): List<Int> = line.split(",").map { it.toInt() }
 
