@@ -9,12 +9,12 @@ object TicketReader {
 	}
 
 	fun departure(lines: List<List<String>>): Long {
-		val originalField = readFields(lines[0])
-		val ticket = Ticket(originalField)
+		val originalFields = readFields(lines[0])
+		val ticket = Ticket(originalFields)
 		val myTicket = readTicket(lines[1][1])
 		val nearbyTickets = readNearbyTicket(lines[2].drop(1), ticket)
-		val mapping = findMapping(originalField, nearbyTickets)
-		return findDepartureIndices(originalField).map { myTicket[mapping[it]!!].toLong() }
+		val mapping = findMapping(originalFields, nearbyTickets)
+		return findDepartureIndices(originalFields).map { myTicket[mapping[it]!!].toLong() }
 			.fold(1L) { acc, next -> acc * next }
 	}
 
