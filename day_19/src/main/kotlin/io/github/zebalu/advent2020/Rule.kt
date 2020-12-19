@@ -14,27 +14,26 @@ class Rule(private val id: Int, ruleDescription: String) {
 	val char = if (simpleRule) ruleDescription[1] else null
 	val rules = if (!simpleRule) toRules(ruleDescription) else emptyList()
 
-	fun matchesWhole(string: String, ruleProvider: (Int) -> Rule): Boolean {
-		val matchResult = matches(string, ruleProvider)
-		return matchResult.any {it.first && it.second.isEmpty()}
-	}
+	fun matchesWhole(string: String, ruleProvider: (Int) -> Rule) =
+		matches(string, ruleProvider).any { it.first && it.second.isEmpty() }
 
-	private fun matches(string: String, ruleProvider: (Int) -> Rule): List<Pair<Boolean, String>> {
-		if (string.isEmpty()) {
-			return listOf(Pair(false, string))
-		} else if (simpleRule && string[0] == char) {
-			return listOf(Pair(true, string.substring(1)))
-		} else {
-			return rules.map { matches(string, it, ruleProvider) }.flatten().filter { it.first }
-		}
-	}
+	private fun matches(string: String, ruleProvider: (Int) -> Rule) =
+		if (string.isEmpty())
+			listOf(Pair(false, string))
+		else if (simpleRule && string[0] == char)
+			listOf(Pair(true, string.substring(1)))
+		else
+			rules.map { matchesRuleList(string, it, ruleProvider) }.flatten().filter { it.first }
 
-	private fun matches(string: String, ruleList: List<Int>, ruleProvider: (Int) -> Rule): List<Pair<Boolean, String>> {
-		if (ruleList.isEmpty()) {
-			return listOf(Pair(true, string))
-		}
-		return ruleProvider(ruleList[0]).matches(string, ruleProvider).filter { it.first }
-			.map { matches(it.second, ruleList.drop(1), ruleProvider) }.flatten().filter { it.first }
-	}
+	private fun matchesRuleList(
+		string: String,
+		ruleList: List<Int>,
+		ruleProvider: (Int) -> Rule
+	): List<Pair<Boolean, String>> =
+		if (ruleList.isEmpty())
+			listOf(Pair(true, string))
+		else
+			ruleProvider(ruleList[0]).matches(string, ruleProvider).filter { it.first }
+				.map { matchesRuleList(it.second, ruleList.drop(1), ruleProvider) }.flatten().filter { it.first }
 
 }

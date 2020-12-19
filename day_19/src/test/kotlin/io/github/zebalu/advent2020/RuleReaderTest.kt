@@ -3,7 +3,7 @@ package io.github.zebalu.advent2020
 import org.junit.Test
 import org.junit.Assert
 
-class RuleReadertest {
+class RuleReaderTest {
 	@Test
 	fun input1() {
 		val (rules, lines) = RuleReader.ruleMap(ResourceReader.lineGroups("/input_19.txt"))
