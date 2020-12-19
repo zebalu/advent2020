@@ -16,7 +16,7 @@ class Rule(private val id: Int, ruleDescription: String) {
 
 	fun matchesWhole(string: String, ruleProvider: (Int) -> Rule): Boolean {
 		val matchResult = matches(string, ruleProvider)
-		return !matchResult.isEmpty() && matchResult[0].first && matchResult[0].second.isEmpty()
+		return matchResult.any {it.first && it.second.isEmpty()}
 	}
 
 	private fun matches(string: String, ruleProvider: (Int) -> Rule): List<Pair<Boolean, String>> {
