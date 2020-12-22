@@ -18,20 +18,17 @@ class RecursiveCardGame(lines: List<List<String>>) {
 		if (canGoOn(state)) {
 			val p1 = draw(player1)
 			val p2 = draw(player2)
-			if (p1 <= player1.size && p2 <= player2.size) {
+			if (p1 <= player1.size && p2 <= player2.size)
 				evalSubGame(
 					p1,
 					player1,
 					player2,
 					subGame(p1, p2, player1.take(p1).toMutableList(), player2.take(p2).toMutableList())
 				)
-			} else if (p1 > p2) {
-				player1.add(p1)
-				player1.add(p2)
-			} else {
-				player2.add(p2)
-				player2.add(p1)
-			}
+			else if (p1 > p2)
+				insert(p1, p2, player1)
+			else
+				insert(p2, p1, player2)
 			deckHistory.add(state)
 		}
 	}
@@ -44,21 +41,17 @@ class RecursiveCardGame(lines: List<List<String>>) {
 			gameHistory.add(state)
 			val d1 = draw(pl1)
 			val d2 = draw(pl2)
-			if (d1 <= pl1.size && d2 <= pl2.size) {
+			if (d1 <= pl1.size && d2 <= pl2.size)
 				evalSubGame(d1, pl1, pl2, subGame(d1, d2, pl1.take(d1).toMutableList(), pl2.take(d2).toMutableList()))
-			} else if (d1 > d2) {
-				pl1.add(d1)
-				pl1.add(d2)
-			} else {
-				pl2.add(d2)
-				pl2.add(d1)
-			}
+			else if (d1 > d2)
+				insert(d1, d2, pl1)
+			else
+				insert(d2, d1, pl2)
 		}
-		if (pl2.isEmpty()) {
-			return listOf(p1, p2)
-		} else {
-			return listOf(p2, p1)
-		}
+		return if (pl2.isEmpty())
+			listOf(p1, p2)
+		else
+			listOf(p2, p1)
 	}
 
 	private fun draw(list: MutableList<Int>): Int {
@@ -79,4 +72,6 @@ class RecursiveCardGame(lines: List<List<String>>) {
 	private fun canGoOn(state: Pair<List<Int>, List<Int>>) = canGoOn() && !deckHistory.contains(state)
 
 	private fun copy(list: List<Int>): List<Int> = mutableListOf<Int>().apply { addAll(list) }
+
+	private fun insert(v1: Int, v2: Int, list: MutableList<Int>) = list.apply { add(v1); add(v2) }
 }
