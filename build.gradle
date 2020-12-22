@@ -8,7 +8,7 @@
  
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.4.20' apply false
-	id 'java-library'
+	id 'java'
 }
 
 allprojects {
@@ -52,6 +52,24 @@ subprojects {
             jvmTarget = "1.8"
         }
     }
+    /*
+    // Disable the test report for the individual test task
+    test {
+        reports.html.enabled = false
+    }
+    
+    // Share the test report data to be aggregated for the whole project
+    configurations {
+        binaryTestResultsElements {
+            canBeResolved = false
+            canBeConsumed = true
+            attributes {
+                attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category, Category.DOCUMENTATION))
+                attribute(DocsType.DOCS_TYPE_ATTRIBUTE, objects.named(DocsType, 'test-report-data'))
+            }
+            outgoing.artifact(test.binaryResultsDirectory)
+        }
+    }*/
 }
 
 sourceCompatibility='1.8'
@@ -59,10 +77,30 @@ sourceCompatibility='1.8'
 dependencies {
     file('./').listFiles().findAll { it.name.startsWith('day') }.each {
 	    implementation project(":${it.name}")
+	    //testReportData project(":${it.name}")
 	}
 	
 	implementation project(':util')
+	//testReportData project(':util')
 }
+/*
+// A resolvable configuration to collect test reports data
+configurations {
+    testReportData {
+        canBeResolved = true
+        canBeConsumed = false
+        attributes {
+            attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category, Category.DOCUMENTATION))
+            attribute(DocsType.DOCS_TYPE_ATTRIBUTE, objects.named(DocsType, 'test-report-data'))
+        }
+    }
+}
+
+tasks.register('testReport', TestReport) {
+    destinationDir = file("$buildDir/reports/allTests")
+    // Use test results from testReportData configuration
+    testResultDirs.from(configurations.testReportData)
+}*/
 
 tasks.create('initDay') {
     doLast {
