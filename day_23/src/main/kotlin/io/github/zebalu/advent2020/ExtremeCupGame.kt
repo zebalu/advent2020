@@ -9,9 +9,9 @@ class ExtremeCupGame(cupList: String) {
 
 	fun shuffle(times: Int): Long {
 		repeat(times) {
-			val pickedUp = pickUp3Cups()
-			val nextDest = chooseDestinationCup(pickedUp.first)
-			insertCups(nextDest, pickedUp.first, pickedUp.second)
+			val (pickedUpCups, pickedUpFrom) = pickUp3Cups()
+			val nextDest = chooseDestinationCup(pickedUpCups)
+			insertCups(nextDest, pickedUpCups, pickedUpFrom)
 			nextCup()
 		}
 		val idx1 = valueIndexMap[1]!!
