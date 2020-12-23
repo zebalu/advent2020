@@ -1,6 +1,9 @@
 package io.github.zebalu.advent2020
 
-data class ValueNext(val value: Int, val next: Int)
+import java.time.Instant
+import java.time.Duration
+
+data class ValueNext(val value: Int, var next: Int)
 
 class ExtremeCupGame(cupList: String) {
 	val followUpMap = firstMillion(cupList)
@@ -23,8 +26,9 @@ class ExtremeCupGame(cupList: String) {
 		val cPlus1 = followUpMap[cvn.next]
 		val cPlus2 = followUpMap[cPlus1.next]
 		val cPlus3 = followUpMap[cPlus2.next]
-		followUpMap[currentCup] = ValueNext(cvn.value, cPlus3.next)
-		return Pair(listOf(cPlus1, cPlus2, cPlus3), cvn.next)
+		val nextId = cvn.next
+		cvn.next = cPlus3.next
+		return Pair(listOf(cPlus1, cPlus2, cPlus3), nextId)
 	}
 
 	private fun chooseDestinationCup(notList: List<ValueNext>): Int {
@@ -32,8 +36,7 @@ class ExtremeCupGame(cupList: String) {
 		if (prev < 1) {
 			prev = followUpMap.size
 		}
-		val notSet = notList.map { it.value }.toSet()
-		while (notSet.contains(prev)) {
+		while (notList[0].value == prev || notList[1].value == prev || notList[2].value == prev) {
 			prev = prev - 1
 			if (prev < 1) {
 				prev = followUpMap.size
@@ -44,8 +47,9 @@ class ExtremeCupGame(cupList: String) {
 
 	private fun insertCups(afterIdx: Int, cupsToInsert: List<ValueNext>, idx: Int) {
 		val next = followUpMap[afterIdx]
-		followUpMap[afterIdx] = ValueNext(next.value, idx)
-		followUpMap[cupsToInsert[1].next] = ValueNext(cupsToInsert[2].value, next.next)
+		val nextId = next.next
+		followUpMap[afterIdx].next = idx
+		followUpMap[cupsToInsert[1].next].next = nextId
 	}
 
 	private fun nextCup() {
